@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Default to UTC if no TIMEZONE env variable is set
+echo "Setting time zone to ${TIMEZONE=UTC}"
+# This only works on Debian-based images
+echo "${TIMEZONE}" > /etc/timezone
+dpkg-reconfigure tzdata
+
 # By default docker gives us 64MB of shared memory size but to display heavy
 # pages we need more.
 umount /dev/shm && mount -t tmpfs shm /dev/shm
