@@ -22,6 +22,11 @@
       return i;
     }
 
+    function addOne(i) {
+      i = 1 + i;
+      return i;
+    }
+
     function twelveHour(i) {
       if (i > 12) {
         i -= 12;
@@ -34,7 +39,7 @@
     function updateClock() {
       var now = new Date(),
         time = twelveHour(now.getHours()) + ':' + addZero(now.getMinutes()) + ':' + addZero(now.getSeconds()),
-        date = [now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear()].join(' ');
+        date = addOne(now.getMonth()) + '/' + now.getDate() + '/' + now.getFullYear();
 
       document.getElementById('time').innerHTML = time;
       document.getElementById('date').innerHTML = date;
