@@ -23,24 +23,36 @@ var rosterDB = firebase.database().ref('roster');
  */
 function createuserElement(username, title) {
   //TODO: instead of innerHTML, make this create seperate elements
-  var html =
-    '<div class="user user-' + username + ' mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing">' +
-      '<div class="mdl-card mdl-shadow--2dp">' +
-        '<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="writeUserAttendance(' + username.toString() + ');">' +
-          '<span class="mdl-card__title-text"></span>' +
-        '</button>' +
-      '</div>' +
-    '</div>';
 
   // Create the DOM element from the HTML.
-  var div = document.createElement('div');
-  div.innerHTML = html;
-  var userElement = div.firstChild;
+  // Create grid
+  var grid = document.createElement('div');
+  grid.setAttribute('class', 'user user-' + username + ' mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing');
+
+  // Create card
+  var card = document.createElement('div');
+  card.setAttribute('class', 'mdl-card mdl-shadow--2dp');
+
+  // Create button
+  var button = document.createElement('button');
+  button.setAttribute('class', 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent')
+
+  // Create button text
+  var buttonText = document.createElement('span');
+  buttonText.setAttribute('class', 'mdl-card__title-text');
+
+  // Structure
+  button.appendChild(buttonText);
+  card.appendChild(button);
+  grid.appendChild(card);
 
   // Set values.
-  userElement.getElementsByClassName('mdl-card__title-text')[0].innerText = title;
+  buttonText.innerText = title;
+  button.addEventListener("click", function() {
+    writeUserAttendance(username);
+  });
 
-  return userElement;
+  return grid;
 }
 
 /**
@@ -54,7 +66,6 @@ function startDatabaseQueries() {
   var fetchUsers = function() {
     rosterUsers.on('child_added', function(snapshot) {
       var newUser = snapshot.val()
-      console.log(newUser);
       var userId = newUser.firstName.concat('-', newUser.lastName);
       var userTitle = newUser.firstName.concat(' ', newUser.lastName);
       var containerElement = document.getElementsByClassName('users-container')[0];
@@ -74,24 +85,20 @@ startDatabaseQueries();
 /**
  * Functions for attendance.
  */
-function userAttendanceDB(fullName) {
-  return firebase.database().ref('attendance/' + fullName);
-};
-
-function getUserStatus(fullName) {
-  userAttendanceDB(fullName).once('child_changed', function(snapshot) {
-    return snapshot.val().status;
-  });
-};
+//TODO: set default values if no values
 
 function writeUserAttendance(fullName) {
-  if (getUserStatus(fullName) === 'in') {
-    userAttendanceDB(fullName).set({
-      status: 'out',
+  var userAttendanceDB = firebase.database().ref('attendance/' + fullName)
+  userAttendanceDB.once('value', function(snapshot) {
+    var currentStatus = snapshot.val().status;
+  });
+  if (currentStatus === 'in') {
+    userAttendanceDB.set({
+      status: 'out'
     });
   } else {
-    userAttendanceDB(fullName).set({
-      status: 'in',
+    userAttendanceDB.set({
+      status: 'in'
     });
   }
 }
