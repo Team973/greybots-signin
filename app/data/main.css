@@ -1,0 +1,132 @@
+/**
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+html, body {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+
+a {
+  text-decoration: underline;
+  color: #039BE5;
+}
+
+.mdl-menu a {
+  text-decoration: none;
+}
+
+.content {
+  max-width: 1024px;
+}
+
+.mdl-card {
+  display: block;
+}
+
+h3 {
+  background: url('firebase-logo.png') no-repeat;
+  background-size: 40px;
+  padding-left: 50px;
+  background-position-y: -2px;
+}
+
+.mdl-textfield {
+  width: 100%;
+}
+
+/* Fixes an MDL bug where the header does not scroll on small devices */
+
+.mdl-layout__container .mdl-layout--fixed-header .mdl-layout__content {
+  overflow-y: visible;
+  overflow-x: visible;
+  overflow: visible;
+}
+
+/* Overrides MDL colors */
+
+.mdl-layout.is-upgraded .mdl-layout__tab.is-active::after, .header .mdl-textfield__label:after {
+  background-color: #FFCA28;
+}
+
+.mdl-snackbar__action {
+  color: #FFCA28;
+}
+
+.mdl-textfield__label:after {
+  background-color: #0288D1;
+}
+
+.mdl-textfield--floating-label.is-focused .mdl-textfield__label {
+  color: #0288D1;
+}
+
+/* Header */
+
+.logo {
+  font-family: 'Amaranth', sans-serif;
+}
+
+.logo .material-icons {
+  top: 4px;
+  font-size: 32px;
+  margin-right: -2px;
+  position: relative;
+}
+
+.header .mdl-layout__header-row {
+  max-width: 1024px;
+  width: 100%;
+  height: auto;
+  padding: 10px 20px;
+  margin: auto;
+  position: relative;
+}
+
+@media screen and (max-width: 840px) {
+  .header .mdl-layout__header-row.titlebar {
+    height: 56px;
+  }
+  .titlebar h3 {
+    font-size: 24px;
+  }
+  .titlebar h3 .material-icons {
+    top: 2.5px;
+    font-size: 23px;
+  }
+}
+
+@media screen and (max-width: 840px) {
+  .mdl-grid {
+    padding: 0;
+  }
+  .mdl-card {
+    font-size: 14px;
+  }
+}
+
+/* user */
+
+.user .mdl-card {
+  height: 100%;
+  top: 0;
+  left: 0;
+  min-height: 0;
+}
+
+.user .header {
+  padding: 10px;
+  width: calc(100% - 100px);
+  display: inline-block;
+}
