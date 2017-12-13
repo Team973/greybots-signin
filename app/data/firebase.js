@@ -15,19 +15,18 @@ firebase.initializeApp(config);
 // Shortcuts to DOM Elements.
 var rosterUserSection = document.getElementById('roster-user-list');
 
-// Database refs
-var roster = firebase.database().ref('roster');
-var userAttendance = firebase.database().ref('attendance');
+// Roster DB
+var rosterDB = firebase.database().ref('roster');
 
 /**
  * Creates a user element.
  */
-function createuserElement(userId, title) {
-
+function createuserElement(username, title) {
+  //TODO: instead of innerHTML, make this create seperate elements
   var html =
-    '<div class="user user-' + userId + ' mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing">' +
+    '<div class="user user-' + username + ' mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing">' +
       '<div class="mdl-card mdl-shadow--2dp">' +
-        '<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="location.reload();">' +
+        '<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="writeUserAttendance(' + username.toString() + ');">' +
           '<span class="mdl-card__title-text"></span>' +
         '</button>' +
       '</div>' +
@@ -49,30 +48,19 @@ function createuserElement(userId, title) {
  */
 function startDatabaseQueries() {
   // [START recent_users_query]
-  var rosterUsers = roster.orderByChild('firstName');
+  var rosterUsers = rosterDB.orderByChild('firstName');
   // [END recent_users_query]
 
   var fetchUsers = function() {
     rosterUsers.on('child_added', function(snapshot) {
       var newUser = snapshot.val()
-      var userTitle = newUser.firstName + ' ' + newUser.lastName;
+      console.log(newUser);
+      var userId = newUser.firstName.concat('-', newUser.lastName);
+      var userTitle = newUser.firstName.concat(' ', newUser.lastName);
       var containerElement = document.getElementsByClassName('users-container')[0];
       containerElement.insertBefore(
-        createuserElement(newUser.key, userTitle),
+        createuserElement(userId, userTitle),
         containerElement.firstChild);
-    });
-    rosterUsers.on('child_changed', function(snapshot) {
-      var newUser = snapshot.val()
-      var userTitle = newUser.firstName + ' ' + newUser.lastName;
-      var containerElement = document.getElementsByClassName('users-container')[0];
-      var userElement = containerElement.getElementsByClassName('user-' + newUser.key)[0];
-      userElement.getElementsByClassName('mdl-card__title-text')[0].innerText = userTitle;
-    });
-    rosterUsers.on('child_removed', function(snapshot) {
-      var newUser = snapshot.val()
-      var containerElement = document.getElementsByClassName('users-container')[0];
-      var user = containerElement.getElementsByClassName('user-' + newUser.key)[0];
-      user.parentElement.removeChild(user);
     });
   };
 
@@ -82,15 +70,28 @@ function startDatabaseQueries() {
 
 startDatabaseQueries();
 
-function writeUserAttendance(fullName, action) {
-  if (action === 'signIn') {
-    database.ref(`attendance/${datetime.date()}/${fullName}`).set({
-      arrival: datetime.time(),
+
+/**
+ * Functions for attendance.
+ */
+function userAttendanceDB(fullName) {
+  return firebase.database().ref('attendance/' + fullName);
+};
+
+function getUserStatus(fullName) {
+  userAttendanceDB(fullName).once('child_changed', function(snapshot) {
+    return snapshot.val().status;
+  });
+};
+
+function writeUserAttendance(fullName) {
+  if (getUserStatus(fullName) === 'in') {
+    userAttendanceDB(fullName).set({
+      status: 'out',
     });
-  }
-  if (action === 'signOut') {
-    database.ref(`attendance/${datetime.date()}/${fullName}`).set({
-      departure: datetime.time(),
+  } else {
+    userAttendanceDB(fullName).set({
+      status: 'in',
     });
   }
 }
