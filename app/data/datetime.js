@@ -32,3 +32,8 @@ function date() {
   const currentDate = `${addOne(now.getMonth())}/${now.getDate()}`;
   return currentDate;
 }
+
+module.exports = {
+  time,
+  date,
+};
