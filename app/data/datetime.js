@@ -12,9 +12,9 @@ function addOne(i) {
 }
 
 function twelveHour(i) {
-  let twelve;
+  let twelve = i;
   if (i > 12) {
-    twelve = i - 12;
+    twelve -= 12;
   } else if (i === 0) {
     twelve = 12;
   }
@@ -29,7 +29,7 @@ function time() {
 
 function date() {
   const now = new Date();
-  const currentDate = `${addOne(now.getMonth())}/${now.getDate()}`;
+  const currentDate = `${addOne(now.getMonth())}-${now.getDate()}`;
   return currentDate;
 }
 
