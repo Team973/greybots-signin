@@ -1,16 +1,24 @@
 const datetime = require('./datetime.js');
-const firebase = require('firebase');
+const firebase = require('firebase-admin');
 
 // Initialize Firebase
-const config = {
-  apiKey: 'AIzaSyDnrZ8l94mfVYyzugwDYwQ3lOv5zsM7Cps',
-  authDomain: 'greybots-signin.firebaseapp.com',
-  databaseURL: 'https://greybots-signin.firebaseio.com',
-  projectId: 'greybots-signin',
-  storageBucket: 'greybots-signin.appspot.com',
-  messagingSenderId: '29179813690',
-};
-firebase.initializeApp(config);
+try {
+  firebase.initializeApp({
+    credential: firebase.credential.cert({
+      projectId: 'greybots-signin',
+      clientEmail: process.env.clientEmail,
+      privateKey: process.env.privateKey,
+    }),
+    databaseURL: 'https://greybots-signin.firebaseio.com',
+  });
+} catch (err) {
+  // This section is for authenticating on a developer environment
+  const serviceAccount = require('./greybots-signin-firebase-adminsdk-jnm12-ac279eb3f2.json'); // Ask Chris for this file
+  firebase.initializeApp({
+    credential: firebase.credential.cert(serviceAccount),
+    databaseURL: 'https://greybots-signin.firebaseio.com',
+  });
+}
 
 // main DB
 const mainDB = firebase.database().ref('attendance');
