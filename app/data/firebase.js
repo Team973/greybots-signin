@@ -20,6 +20,7 @@ const rosterDB = firebase.database().ref('roster');
  */
 
 function writeUserAttendance(fullName) {
+  const btnColor = document.getElementById(fullName);
   const userStatusDB = firebase.database().ref(`attendance/${fullName}`);
   const userAttendanceDB = firebase.database().ref(`attendance/${fullName}/${datetime.date()}`);
   userStatusDB.once('value', (snapshot) => {
@@ -31,6 +32,7 @@ function writeUserAttendance(fullName) {
       userAttendanceDB.update({
         departure: datetime.time(),
       });
+      btnColor.style.backgroundColor = '#ff4081';
     } else {
       userStatusDB.update({
         status: 'in',
@@ -38,6 +40,7 @@ function writeUserAttendance(fullName) {
       userAttendanceDB.update({
         arrival: datetime.time(),
       });
+      btnColor.style.backgroundColor = '#8bc34a';
     }
   });
 }
@@ -57,11 +60,11 @@ function createuserElement(username, title) {
 
   // Create button
   const button = document.createElement('button');
-  button.setAttribute('class', 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent');
+  button.setAttribute('class', 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect');
+  button.setAttribute('id', username)
 
   // Create button text
   const buttonText = document.createElement('span');
-  buttonText.setAttribute('class', 'mdl-card__title-text');
 
   // Structure
   button.appendChild(buttonText);
