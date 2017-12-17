@@ -12,38 +12,51 @@ const config = {
 };
 firebase.initializeApp(config);
 
-// Roster DB
-const rosterDB = firebase.database().ref('roster');
+// main DB
+const mainDB = firebase.database().ref('attendance');
 
 /**
  * Functions for attendance.
  */
 
-function writeUserAttendance(fullName) {
-  const btnColor = document.getElementById(fullName);
-  const userStatusDB = firebase.database().ref(`attendance/${fullName}`);
-  const userAttendanceDB = firebase.database().ref(`attendance/${fullName}/${datetime.date()}`);
-  userStatusDB.once('value', (snapshot) => {
+function writeUserAttendance(userId) {
+  const btnColor = document.getElementById(userId);
+  const user = mainDB.child(userId);
+  const userAttendance = user.child(datetime.date());
+  user.once('value', (snapshot) => {
     const currentStatus = snapshot.val().status;
     if (currentStatus === 'in') {
-      userStatusDB.update({
+      user.update({
         status: 'out',
       });
-      userAttendanceDB.update({
+      userAttendance.update({
         departure: datetime.time(),
       });
-      btnColor.style.backgroundColor = '#ff4081';
     } else {
-      userStatusDB.update({
+      user.update({
         status: 'in',
       });
-      userAttendanceDB.update({
+      userAttendance.update({
         arrival: datetime.time(),
       });
-      btnColor.style.backgroundColor = '#8bc34a';
     }
   });
 }
+
+/**
+ * Functions for UI look and feel.
+ */
+
+ function btnColorChange(snapshot){
+   const currentUserInfo = snapshot.val();
+   const currentUserStatus = currentUserInfo.status;
+   const btnColor = document.getElementById(snapshot.key);
+   if (currentUserStatus === 'in') {
+     btnColor.style.backgroundColor = '#8bc34a';
+   } else {
+     btnColor.style.backgroundColor = '#ff4081';
+   }
+ }
 
 /**
  * Creates a user element.
@@ -61,7 +74,7 @@ function createuserElement(username, title) {
   // Create button
   const button = document.createElement('button');
   button.setAttribute('class', 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect');
-  button.setAttribute('id', username)
+  button.setAttribute('id', username);
 
   // Create button text
   const buttonText = document.createElement('span');
@@ -85,24 +98,37 @@ function createuserElement(username, title) {
  */
 function startDatabaseQueries() {
   // [START recent_users_query]
-  const rosterUsers = rosterDB.orderByChild('firstName');
+  const userList = mainDB.orderByChild('firstName');
   // [END recent_users_query]
 
   function fetchUsers() {
-    rosterUsers.on('child_added', (snapshot) => {
-      const newUser = snapshot.val();
-      const userId = newUser.firstName.concat('-', newUser.lastName);
-      const userTitle = newUser.firstName.concat(' ', newUser.lastName);
+    userList.on('child_added', (snapshot) => {
+      const currentUser = snapshot.key;
+      const userTitle = currentUser.replace('-', ' ');
       const containerElement = document.getElementsByClassName('users-container')[0];
       containerElement.insertBefore(
-        createuserElement(userId, userTitle),
+        createuserElement(currentUser, userTitle),
         containerElement.firstChild,
       );
+      mainDB.child(currentUser).update({
+        status: 'out',
+      });
     });
+  }
+
+  function fetchBtnColor() {
+    userList.on('child_added', (snapshot) => {
+      btnColorChange(snapshot);
+    });
+    userList.on('child_changed', (snapshot) => {
+      btnColorChange(snapshot);
+    }
+  )
   }
 
   // Fetching and displaying all users of each sections.
   fetchUsers();
+  fetchBtnColor();
 }
 
 startDatabaseQueries();
