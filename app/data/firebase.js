@@ -20,7 +20,6 @@ const mainDB = firebase.database().ref('attendance');
  */
 
 function writeUserAttendance(userId) {
-  const btnColor = document.getElementById(userId);
   const user = mainDB.child(userId);
   const userAttendance = user.child(datetime.date());
   user.once('value', (snapshot) => {
@@ -47,16 +46,16 @@ function writeUserAttendance(userId) {
  * Functions for UI look and feel.
  */
 
- function btnColorChange(snapshot){
-   const currentUserInfo = snapshot.val();
-   const currentUserStatus = currentUserInfo.status;
-   const btnColor = document.getElementById(snapshot.key);
-   if (currentUserStatus === 'in') {
-     btnColor.style.backgroundColor = '#8bc34a';
-   } else {
-     btnColor.style.backgroundColor = '#ff4081';
-   }
- }
+function btnColorChange(snapshot) {
+  const currentUserInfo = snapshot.val();
+  const currentUserStatus = currentUserInfo.status;
+  const btnColor = document.getElementById(snapshot.key);
+  if (currentUserStatus === 'in') {
+    btnColor.style.backgroundColor = '#8bc34a';
+  } else {
+    btnColor.style.backgroundColor = '#ff4081';
+  }
+}
 
 /**
  * Creates a user element.
@@ -122,8 +121,7 @@ function startDatabaseQueries() {
     });
     userList.on('child_changed', (snapshot) => {
       btnColorChange(snapshot);
-    }
-  )
+    });
   }
 
   // Fetching and displaying all users of each sections.
