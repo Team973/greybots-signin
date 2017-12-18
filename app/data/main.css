@@ -134,9 +134,3 @@ h3 {
   width: 100%;
   font-size: 3.7vh;
 }
-
-.user .header {
-  padding: 10px;
-  width: calc(100% - 100px);
-  display: inline-block;
-}

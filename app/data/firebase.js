@@ -60,8 +60,10 @@ function btnColorChange(snapshot) {
   const btnColor = document.getElementById(snapshot.key);
   if (currentUserStatus === 'in') {
     btnColor.style.backgroundColor = '#8bc34a';
-  } else {
+    btnColor.style.color = '#ffffff';
+  } else if (currentUserStatus === 'out') {
     btnColor.style.backgroundColor = '#ff4081';
+    btnColor.style.color = '#000000';
   }
 }
 
@@ -117,9 +119,6 @@ function startDatabaseQueries() {
         createuserElement(currentUser, userTitle),
         containerElement.firstChild,
       );
-      mainDB.child(currentUser).update({
-        status: 'out',
-      });
     });
   }
 
