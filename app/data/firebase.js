@@ -117,7 +117,7 @@ function startDatabaseQueries() {
       const containerElement = document.getElementsByClassName('users-container')[0];
       containerElement.insertBefore(
         createuserElement(currentUser, userTitle),
-        containerElement.firstChild,
+        containerElement.nextChild,
       );
     });
   }
