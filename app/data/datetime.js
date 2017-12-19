@@ -4,7 +4,7 @@
  * @copyright The Greybots 2018
  */
 
- /**
+/**
   * Prepends a zero to the input if the input is less than 10
   * @param {number} i - An integer
   * @returns {number} - i with 0 prepended if needed

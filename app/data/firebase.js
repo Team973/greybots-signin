@@ -141,7 +141,7 @@ function startDatabaseQueries() {
   const userList = mainDB.orderByChild('firstName');
 
   /**
-   * Fetches all user entries in the database and calls createUserElement() to make buttons for each user
+   * Fetches all user entries in the database and calls createUserElement() for each user
    */
   function fetchUsers() {
     userList.on('child_added', (snapshot) => {
@@ -156,7 +156,7 @@ function startDatabaseQueries() {
   }
 
   /**
-   * Listens to all user entries and calls btnColorChange() to match button color with the user's status
+   * Listens to all users and calls btnColorChange() to match button color with the user's status
    */
   function fetchBtnColor() {
     userList.on('child_added', (snapshot) => {
