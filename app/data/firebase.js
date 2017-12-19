@@ -1,3 +1,9 @@
+/**
+ * @file All i/o from firebase resides here
+ * @author Chris Lawson
+ * @copyright The Greybots 2018
+ */
+
 const datetime = require('./datetime.js');
 const firebase = require('firebase-admin');
 
@@ -24,9 +30,9 @@ try {
 const mainDB = firebase.database().ref('attendance');
 
 /**
- * Functions for attendance.
+ * Writes the specified user's attendance to the database
+ * @param {string} userId - The hyphenated full name of the user
  */
-
 function writeUserAttendance(userId) {
   const user = mainDB.child(userId);
   const userAttendance = user.child(datetime.date());
@@ -50,6 +56,9 @@ function writeUserAttendance(userId) {
   });
 }
 
+/**
+ * Signs all signed in users out in the database
+ */
 function signEveryoneOut() {
   mainDB.on('value', (snapshot) => {
     Object.keys(snapshot.val()).forEach((key) => {
@@ -71,9 +80,9 @@ function signEveryoneOut() {
 }
 
 /**
- * Functions for UI look and feel.
+ * Changes user button styling based on the user's current status
+ * @param {Object} snapshot - firebase.database.DataSnapshot output for the user
  */
-
 function btnColorChange(snapshot) {
   const currentUserInfo = snapshot.val();
   const currentUserStatus = currentUserInfo.status;
@@ -88,13 +97,16 @@ function btnColorChange(snapshot) {
 }
 
 /**
- * Creates a user element.
+ * Creates a button for the user information provided
+ * @param {string} userId - The hyphenated full name of the user
+ * @param {string} title - The unhyphenated full name of the user
+ * @returns {div} - The div for the grid with all the buttons
  */
-function createuserElement(username, title) {
+function createUserElement(userId, title) {
   // Create the DOM element from the HTML.
   // Create grid
   const grid = document.createElement('div');
-  grid.setAttribute('class', `user user-${username} mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing`);
+  grid.setAttribute('class', `user user-${userId} mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing`);
 
   // Create card
   const card = document.createElement('div');
@@ -103,7 +115,7 @@ function createuserElement(username, title) {
   // Create button
   const button = document.createElement('button');
   button.setAttribute('class', 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect');
-  button.setAttribute('id', username);
+  button.setAttribute('id', userId);
 
   // Create button text
   const buttonText = document.createElement('span');
@@ -116,7 +128,7 @@ function createuserElement(username, title) {
   // Set values.
   buttonText.innerText = title;
   button.addEventListener('click', () => {
-    writeUserAttendance(username);
+    writeUserAttendance(userId);
   });
 
   return grid;
@@ -126,22 +138,26 @@ function createuserElement(username, title) {
  * Starts listening for new users and populates users lists.
  */
 function startDatabaseQueries() {
-  // [START recent_users_query]
   const userList = mainDB.orderByChild('firstName');
-  // [END recent_users_query]
 
+  /**
+   * Fetches all user entries in the database and calls createUserElement() to make buttons for each user
+   */
   function fetchUsers() {
     userList.on('child_added', (snapshot) => {
       const currentUser = snapshot.key;
       const userTitle = currentUser.replace('-', ' ');
       const containerElement = document.getElementsByClassName('users-container')[0];
       containerElement.insertBefore(
-        createuserElement(currentUser, userTitle),
+        createUserElement(currentUser, userTitle),
         containerElement.nextChild,
       );
     });
   }
 
+  /**
+   * Listens to all user entries and calls btnColorChange() to match button color with the user's status
+   */
   function fetchBtnColor() {
     userList.on('child_added', (snapshot) => {
       btnColorChange(snapshot);
