@@ -50,6 +50,26 @@ function writeUserAttendance(userId) {
   });
 }
 
+function signEveryoneOut() {
+  mainDB.on('value', (snapshot) => {
+    Object.keys(snapshot.val()).forEach((key) => {
+      const user = mainDB.child(key);
+      const userAttendance = user.child(datetime.date());
+      user.once('value', (snap) => {
+        const userStatus = snap.val().status;
+        if (userStatus === 'in') {
+          user.update({
+            status: 'out',
+          });
+          userAttendance.update({
+            departure: datetime.time(),
+          });
+        }
+      });
+    });
+  });
+}
+
 /**
  * Functions for UI look and feel.
  */
