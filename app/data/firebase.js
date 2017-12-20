@@ -60,7 +60,7 @@ function writeUserAttendance(userId) {
  * Signs all signed in users out in the database
  */
 function signEveryoneOut() {
-  mainDB.on('value', (snapshot) => {
+  mainDB.once('value', (snapshot) => {
     Object.keys(snapshot.val()).forEach((key) => {
       const user = mainDB.child(key);
       const userAttendance = user.child(datetime.date());
@@ -100,7 +100,7 @@ function btnColorChange(snapshot) {
  * Creates a button for the user information provided
  * @param {string} userId - The hyphenated full name of the user
  * @param {string} title - The unhyphenated full name of the user
- * @returns {div} - The div for the grid with all the buttons
+ * @returns {HTMLDivElement} grid - The div for the grid with all the buttons
  */
 function createUserElement(userId, title) {
   // Create the DOM element from the HTML.
