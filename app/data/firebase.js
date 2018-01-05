@@ -12,8 +12,8 @@ try {
   firebase.initializeApp({
     credential: firebase.credential.cert({
       projectId: 'greybots-signin',
-      clientEmail: process.env.clientEmail,
-      privateKey: process.env.privateKey,
+      clientEmail: process.env.CLIENT_EMAIL,
+      privateKey: process.env.PRIVATE_KEY,
     }),
     databaseURL: 'https://greybots-signin.firebaseio.com',
   });
