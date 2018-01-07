@@ -1,0 +1,9 @@
+[Unit]
+Description=Invoke Elo service at system startup.
+
+[Service]
+Type=forking
+ExecStart=/etc/opt/elo-usb/loadEloTouchUSB.sh
+
+[Install]
+WantedBy=graphical.target
