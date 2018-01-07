@@ -55,8 +55,5 @@ COPY ./app ./
 ## uncomment if you want systemd
 ENV INITSYSTEM on
 
-# Setup touchscreen driver
-CMD ["bash", "/usr/src/app/touchdriver/install.sh"]
-
 # Start app
 CMD ["bash", "/usr/src/app/start.sh"]
