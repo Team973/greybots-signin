@@ -18,7 +18,7 @@ umount /dev/shm && mount -t tmpfs shm /dev/shm
 rm /tmp/.X0-lock &>/dev/null || true
 startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging &
 
-sleep 10
+sleep 20
 
 # Copy driver folder and change permissions
 cp -r /usr/src/app/touchdriver/ /etc/opt/elo-usb
