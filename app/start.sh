@@ -30,4 +30,4 @@ cp /etc/opt/elo-usb/99-elotouch.rules /etc/udev/rules.d
 
 # Startup Driver
 sh ./loadEloTouchUSB.sh
-./eloautocalib --renew
+DISPLAY=0390b60:0 ./eloautocalib --renew
