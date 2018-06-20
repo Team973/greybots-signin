@@ -16,4 +16,18 @@ umount /dev/shm && mount -t tmpfs shm /dev/shm
 # it saves you a LOT of resources avoiding full-desktops envs
 
 rm /tmp/.X0-lock &>/dev/null || true
-startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging
+startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging &
+disown
+
+sleep 10
+
+# Copy driver folder and change permissions
+cp -r /usr/src/app/touchdriver/ /etc/opt/elo-usb
+cd /etc/opt/elo-usb
+chmod 777 *
+chmod 444 *.txt
+cp /etc/opt/elo-usb/99-elotouch.rules /etc/udev/rules.d
+
+# Startup Driver
+sh ./loadEloTouchUSB.sh
+DISPLAY=0390b60:0 ./eloautocalib --renew

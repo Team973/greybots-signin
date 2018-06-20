@@ -1,7 +1,7 @@
 {
   "name": "Greybots-Signin",
-  "version": "0.1.0",
-  "description": "Clock in/out system for Team 973 The Greybots. Currently a placeholder.",
+  "version": "1.0.0",
+  "description": "Clock in/out system for Team 973 The Greybots.",
   "main": "main.js",
   "scripts": {
     "dev": "NODE_ENV=development electron .",
@@ -20,7 +20,9 @@
   ],
   "dependencies": {
     "electron": "^1.7.9",
-    "electron-rebuild": "^1.6.0"
+    "electron-rebuild": "^1.6.0",
+    "firebase": "^4.7.0",
+    "firebase-admin": "^5.5.1"
   },
   "author": "Chris Lawson",
   "license": "Apache-2.0",

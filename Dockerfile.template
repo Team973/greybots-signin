@@ -1,13 +1,20 @@
 FROM resin/%%RESIN_MACHINE_NAME%%-node:6
 
 # Install other apt deps
-RUN apt-get update && apt-get install -y \
+RUN apt update && apt install -y apt-transport-https
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt update && apt install -y \
+  yarn \
   apt-utils \
   clang \
   xserver-xorg-core \
   xserver-xorg-input-all \
   xserver-xorg-video-fbdev \
+  xserver-xorg-input-elographics \
   xorg \
+  libmotif-dev \
+  libusb-dev \
   libdbus-1-dev \
   libgtk2.0-dev \
   libnotify-dev \
@@ -38,9 +45,9 @@ WORKDIR /usr/src/app
 # Move package.json to filesystem
 COPY ./app/package.json ./
 
-# Install npm modules for the application
-RUN JOBS=MAX npm install --unsafe-perm --production \
-	&& npm cache clean && node_modules/.bin/electron-rebuild
+# Install yarn modules for the application
+RUN JOBS=MAX yarn install --unsafe-perm --production \
+	&& yarn cache clean && node_modules/.bin/electron-rebuild
 
 # Move app to filesystem
 COPY ./app ./
