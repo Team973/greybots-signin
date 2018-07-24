@@ -1,4 +1,4 @@
 node_modules
 .DS_Store
-app/yarn-error.log
-greybots-signin-firebase-adminsdk-*
+*.log
+**/bundle.js
