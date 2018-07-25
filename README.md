@@ -1,21 +1,56 @@
 # greybots-signin
 
-Team 973 - The Greybots' clock in/out system that runs on a Raspberry Pi w/ [Electron](https://electron.atom.io/), [resin.io](https://resin.io/), and [Firebase](https://firebase.google.com/).
+Team 973 - The Greybots' clock in/out system that runs on [Firebase](https://firebase.google.com/)'s [Real Time Database](https://firebase.google.com/docs/database/) w/ [Firebase Hosting](https://firebase.google.com/docs/hosting/). Also uses a Raspberry Pi with a ELO touchscreen in our shop.
 
 ## Getting started
 
 ### Create a working developer environment
 
-1. clone this repository to your local workspace
-2. install `yarn`, `node` and `npm`
-3. run `yarn install` in app/
-4. grab the service account key from the [Firebase Console](https://console.firebase.google.com/) (or ask @Chris2fourlaw for one) and put it in data/
-5. run `yarn run dev` in app/
-You should see the system working!
+1.  Clone this repository to your local workspace.
+2.  Install `yarn` using your package manager. Check Yarn's website for instructions.
+3.  Run `yarn install` in the repository.
 
-### Push to the Raspberry Pi
+### Testing using Electron
 
-1. authorize your GitHub with the [resin.io](https://resin.io/) project
-2. in the local workspace, run the remote add command that shows in the [resin.io Dashboard](https://dashboard.resin.io/) (for example: `git remote add resin <username>@git.resin.io:<project>`)
-3. add, commit, then run `git push resin <branch>`
-You should see the Raspberry Pi automatically download the new image and run the updated system!
+[Electron](https://electronjs.org/) runs a custom Chromium browser used for web apps. It's a quick way to view changes to greybots-signin. To run Electron, do the following:
+
+1.  Run `yarn start` in the repository.
+2.  Login using the email and password.
+
+### Testing using Firebase Hosting
+
+[Firebase Hosting](https://firebase.google.com/docs/hosting/) allows you to serve the site on a locally hosted web server to replicate Firebase's servers. To serve, do the following:
+
+1.  Run `yarn serve` in the repository.
+2.  Open a web browser to <https://localhost:5000/>
+3.  Login using the email and password.
+
+### Deploying to Firebase Hosting
+
+To push your changes to Firebase's servers, do the following:
+
+1.  Run `yarn deploy` in the repository.
+2.  Open a web browser to <https://greybots-signin.firebaseapp.com/>
+3.  Login using the email and password.
+
+## Good coding practices
+
+### Modules
+
+Try to separate your code into different modules. An example of this is in `public/js/util.js` where there are utility functions for time, date, and etc. Make sure to use `module.exports`.
+
+### Linting
+
+[Eslint](https://eslint.org/) is included with this repository and uses a modified version of [Airbnb's strict style guide](https://github.com/airbnb/javascript). This will help with performance issues as well as generating cleaner code.
+
+To lint, use `yarn lint`. To automatically fix most errors/warnings, use `yarn lint --fix`.
+
+## Troubleshooting
+
+### Help! My site isn't loading correctly!
+
+If your site seems to be breaking, open Developer Tools > Console to view JavaScript errors that will point you to your problem. Sometimes, these problems can be resolved by linting.
+
+### I'm getting some weird gRPC error when using Electron...
+
+Run `yarn run electron-rebuild`. If it still doesn't resolve the issue, use `yarn serve`.
