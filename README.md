@@ -41,9 +41,9 @@ Try to separate your code into different modules. An example of this is in `publ
 
 ### Linting
 
-[Eslint](https://eslint.org/) is included with this repository and uses a modified version of [Airbnb's strict style guide](https://github.com/airbnb/javascript). This will help with performance issues as well as generating cleaner code.
+[JSHint](https://jshint.com/) is included with this repository and is configured to be strict for linting. This will help with performance issues as well as generating cleaner code.
 
-To lint, use `yarn lint`. To automatically fix most errors/warnings, use `yarn lint --fix`.
+To lint, use `yarn lint`. To automatically fix most errors/warnings, use `yarn autolint`.
 
 ## Troubleshooting
 

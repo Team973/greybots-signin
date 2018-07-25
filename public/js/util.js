@@ -10,6 +10,7 @@
  * @returns {number} i with 0 prepended if needed.
  */
 function addZero(i) {
+  "use strict";
   let zero = i;
   if (i < 10) {
     zero = `0${i}`;
@@ -23,6 +24,7 @@ function addZero(i) {
  * @returns {number} The sum of 1 + i.
  */
 function addOne(i) {
+  "use strict";
   const one = 1 + i;
   return one;
 }
@@ -33,6 +35,7 @@ function addOne(i) {
  * @returns {number} 12-hour based time.
  */
 function toTwelveHour(i) {
+  "use strict";
   let twelve = i;
   if (i > 12) {
     twelve -= 12;
@@ -47,6 +50,7 @@ function toTwelveHour(i) {
  * @returns {number} The current time in 12-hour format.
  */
 function getCurrentTime() {
+  "use strict";
   const now = new Date();
   const currentTime = `${toTwelveHour(now.getHours())}:${addZero(now.getMinutes())}:${addZero(now.getSeconds())}`;
   return currentTime;
@@ -57,6 +61,7 @@ function getCurrentTime() {
  * @returns {number} The current date in mm/dd format.
  */
 function getCurrentDate() {
+  "use strict";
   const now = new Date();
   const currentDate = `${addOne(now.getMonth())}-${now.getDate()}`;
   return currentDate;

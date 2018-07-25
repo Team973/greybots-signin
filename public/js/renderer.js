@@ -12,6 +12,7 @@ const util = require('./util.js');
  * Create date/time info.
  */
 function startDateTime() {
+  "use strict";
   document.getElementById('datetime').innerHTML = `${util.getCurrentDate()} ${util.getCurrentTime()}`;
   setTimeout(() => {
     startDateTime();
@@ -19,6 +20,7 @@ function startDateTime() {
 }
 
 function initApp() {
+  "use strict";
   // Listening for auth state changes.
   database.auth.onAuthStateChanged((user) => {
     if (user) {
@@ -37,5 +39,6 @@ function initApp() {
 }
 
 window.onload = () => {
+  "use strict";
   initApp();
 };

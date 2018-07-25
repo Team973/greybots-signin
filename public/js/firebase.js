@@ -30,6 +30,7 @@ const auth = firebase.auth();
  * Handles the sign in button press.
  */
 function toggleSignIn() {
+  "use strict";
   if (auth.currentUser) {
     auth.signOut();
     location = location;
@@ -62,6 +63,7 @@ function toggleSignIn() {
  * Shows the dialog for signing in to the database.
  */
 function showAccountDialog() {
+  "use strict";
   const accountDialog = document.getElementById('account-dialog');
   const actionBtn = document.getElementById('account-dialog-action');
   const closeBtn = document.getElementById('account-dialog-close');
