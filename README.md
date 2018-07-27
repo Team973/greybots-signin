@@ -1,5 +1,7 @@
 # greybots-signin
 
+[![Build Status](https://travis-ci.com/Team973/greybots-signin.svg?token=PMQ4h4i9r3eRUJnsCJBt&branch=master)](https://travis-ci.com/Team973/greybots-signin)
+
 Team 973 - The Greybots' clock in/out system that runs on [Firebase](https://firebase.google.com/)'s [Real Time Database](https://firebase.google.com/docs/database/) w/ [Firebase Hosting](https://firebase.google.com/docs/hosting/). Also uses a Raspberry Pi with a ELO touchscreen in our shop.
 
 ## Getting started
