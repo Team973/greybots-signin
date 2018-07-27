@@ -5,11 +5,11 @@
   "main": "main.js",
   "scripts": {
     "autolint": "fixmyjs public/",
-    "lint": "jshint public/",
-    "test": "jshint public/",
-    "serve": "browserify ./public/js/renderer.js > ./public/js/bundle.js && firebase serve",
-    "deploy": "browserify ./public/js/renderer.js > ./public/js/bundle.js && firebase deploy",
-    "start": "browserify ./public/js/renderer.js > ./public/js/bundle.js && electron ."
+    "lint": "jshint public/ --exclude-path .gitignore",
+    "test": "jshint public/ --exclude-path .gitignore",
+    "serve": "browserify ./public/js/main/renderer.js > ./public/js/main/bundle.js && firebase serve",
+    "deploy": "browserify ./public/js/main/renderer.js > ./public/js/main/bundle.js && firebase deploy",
+    "start": "browserify ./public/js/main/renderer.js > ./public/js/main/bundle.js && electron ."
   },
   "repository": {
     "type": "git",

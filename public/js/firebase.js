@@ -22,9 +22,13 @@ const config = {
 };
 firebase.initializeApp(config);
 
-// main DB
-const mainDB = firebase.database().ref('attendance');
+// Firebase variables
 const auth = firebase.auth();
+const mainDB = firebase.database();
+const attendanceDB = mainDB.ref('attendance');
+const dateDB = attendanceDB.child('bydate');
+const nameDB = attendanceDB.child('byname');
+const userDB = mainDB.ref('users');
 
 /**
  * Handles the sign in button press.
@@ -78,7 +82,9 @@ function showAccountDialog() {
 }
 
 module.exports = {
-  mainDB,
   auth,
+  dateDB,
+  nameDB,
   showAccountDialog,
+  userDB,
 };

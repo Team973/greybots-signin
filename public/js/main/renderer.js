@@ -4,9 +4,9 @@
  * @copyright The Greybots 2018
  */
 
-const database = require('./firebase.js');
+const database = require('../firebase.js');
 const users = require('./users.js');
-const util = require('./util.js');
+const util = require('../util.js');
 
 /**
  * Create date/time info.

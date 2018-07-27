@@ -4,21 +4,26 @@
  * @copyright The Greybots 2018
  */
 
-const database = require('./firebase.js');
-const util = require('./util.js');
+const database = require('../firebase.js');
+const util = require('../util.js');
 
 
 /**
  * Clocks in the user.
  * @param {string} user The user object from the database.
  */
-function clockIn(user) {
+function clockIn(userId) {
   "use strict";
-  const userAttendance = user.child(util.getCurrentDate());
+  const user = database.userDB.child(userId);
+  const userDateAttendance = database.dateDB.child(util.getCurrentDate()).child(userId);
+  const userNameAttendance = database.nameDB.child(userId).child(util.getCurrentDate());
   user.update({
     status: 'in',
   });
-  userAttendance.update({
+  userNameAttendance.update({
+    arrival: util.getCurrentTime(),
+  });
+  userDateAttendance.update({
     arrival: util.getCurrentTime(),
   });
 }
@@ -27,13 +32,18 @@ function clockIn(user) {
  * Clocks out the user.
  * @param {string} user The user object from the database.
  */
-function clockOut(user) {
+function clockOut(userId) {
   "use strict";
-  const userAttendance = user.child(util.getCurrentDate());
+  const user = database.userDB.child(userId);
+  const userDateAttendance = database.dateDB.child(util.getCurrentDate()).child(userId);
+  const userNameAttendance = database.nameDB.child(userId).child(util.getCurrentDate());
   user.update({
     status: 'out',
   });
-  userAttendance.update({
+  userNameAttendance.update({
+    departure: util.getCurrentTime(),
+  });
+  userDateAttendance.update({
     departure: util.getCurrentTime(),
   });
 }
@@ -47,14 +57,13 @@ function showClockOutDialog(userId) {
   const warnDialog = document.getElementById('warn-dialog');
   const continueBtn = document.getElementById('warn-dialog-continue');
   const closeBtn = document.getElementById('warn-dialog-close');
-  const user = database.mainDB.child(userId);
   warnDialog.showModal();
 
   closeBtn.addEventListener('click', () => {
     warnDialog.close();
   });
   continueBtn.addEventListener('click', () => {
-    clockOut(user);
+    clockOut(userId);
     warnDialog.close();
   });
 }
@@ -65,13 +74,12 @@ function showClockOutDialog(userId) {
  */
 function userBtnHandler(userId) {
   "use strict";
-  const user = database.mainDB.child(userId);
+  const user = database.userDB.child(userId);
   user.once('value', (snapshot) => {
-    const userStatus = snapshot.val().status;
-    if (userStatus === 'in') {
+    if (snapshot.val().status === 'in') {
       showClockOutDialog(userId);
     } else {
-      clockIn(user);
+      clockIn(userId);
     }
   });
 }
@@ -81,13 +89,11 @@ function userBtnHandler(userId) {
  */
 document.getElementById('clock-everyone-out').onclick = () => {
   "use strict";
-  database.mainDB.once('value', (snapshot) => {
-    Object.keys(snapshot.val()).forEach((key) => {
-      const user = database.mainDB.child(key);
+  database.userDB.once('value', (snapshot) => {
+    Object.keys(snapshot.val()).forEach((userId) => {
       user.once('value', (snap) => {
-        const userStatus = snap.val().status;
-        if (userStatus === 'in') {
-          clockOut(user);
+        if (snap.val().status === 'in') {
+          clockOut(userId);
         }
       });
     });
@@ -98,17 +104,20 @@ document.getElementById('clock-everyone-out').onclick = () => {
  * Changes user button styling based on the user's current status.
  * @param {Object} snapshot firebase.database.DataSnapshot output for the user
  */
-function btnColorChange(snapshot) {
+function btnColorChange(userId) {
   "use strict";
-  const userStatus = snapshot.val().status;
-  const btnColor = document.getElementById(snapshot.key);
-  if (userStatus === 'in') {
-    btnColor.style.backgroundColor = '#8bc34a';
-    btnColor.style.color = '#ffffff';
-  } else if (userStatus === 'out') {
-    btnColor.style.backgroundColor = '#ff4081';
-    btnColor.style.color = '#000000';
-  }
+  database.userDB.child(userId).once('value', (snapshot) => {
+    const btnColor = document.getElementById(userId);
+    if (snapshot.val().status === 'in') {
+      btnColor.style.backgroundColor = '#8bc34a';
+      btnColor.style.color = '#ffffff';
+    } else if (snapshot.val().status === 'out') {
+      btnColor.style.backgroundColor = '#ff4081';
+      btnColor.style.color = '#000000';
+    } else {
+      throw "Incorrect user status.";
+    }
+  });
 }
 
 /**
@@ -150,7 +159,7 @@ function createUserElement(userId, title) {
   return grid;
 }
 
-const userList = database.mainDB.orderByChild('firstName');
+const userList = database.userDB.orderByChild('firstName');
 
 /**
  * Fetches all user entries in the database and calls createUserElement() for each user.
@@ -158,17 +167,18 @@ const userList = database.mainDB.orderByChild('firstName');
 function fetchUsers() {
   "use strict";
   userList.on('child_added', (snapshot) => {
-    const currentUser = snapshot.key;
-    const userTitle = currentUser.replace('-', ' ');
+    const userId = snapshot.key;
+    const userTitle = userId.replace('-', ' ');
     const containerElement = document.getElementById('users-container');
     containerElement.insertBefore(
-      createUserElement(currentUser, userTitle),
+      createUserElement(userId, userTitle),
       containerElement.nextChild
     );
-    btnColorChange(snapshot);
+    btnColorChange(userId);
   });
   userList.on('child_changed', (snapshot) => {
-    btnColorChange(snapshot);
+    const userId = snapshot.key;
+    btnColorChange(userId);
   });
 }
 

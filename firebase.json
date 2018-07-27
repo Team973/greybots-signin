@@ -8,7 +8,9 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
+      "**/firebase.js",
       "**/renderer.js",
+      "**/users.js",
       "**/util.js"
     ]
   }
