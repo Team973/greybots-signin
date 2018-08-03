@@ -91,6 +91,7 @@ document.getElementById('clock-everyone-out').onclick = () => {
   "use strict";
   database.userDB.once('value', (snapshot) => {
     Object.keys(snapshot.val()).forEach((userId) => {
+      const user = database.userDB.child(userId);
       user.once('value', (snap) => {
         if (snap.val().status === 'in') {
           clockOut(userId);
