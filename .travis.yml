@@ -1,12 +1,15 @@
 language: node_js
 node_js:
  - "node"
-cache: yarn
+
+cache:
+  directories:
+    - "node_modules"
 
 jobs:
   include:
-    - stage: test
-      script: yarn test
-    - stage: deploy
-      if: branch = master
-      script: yarn deploy --token "$FIREBASE_TOKEN"
+    - stage:  test
+      script: npm test
+    - stage:  deploy
+      if:     branch = master
+      script: npm run deploy -- --token "$FIREBASE_TOKEN"

@@ -15,93 +15,93 @@
  */
 
 html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+    font-family: 'Roboto', 'Helvetica', sans-serif;
 }
 
 a {
-  text-decoration: underline;
-  color: #039BE5;
+    text-decoration: underline;
+    color: #039BE5;
 }
 
 .mdl-menu a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .content {
-  max-width: 1024px;
+    max-width: 1024px;
 }
 
 .mdl-card {
-  display: block;
+    display: block;
 }
 
 .mdl-textfield {
-  width: 100%;
+    width: 100%;
 }
 
 /* Fixes an MDL bug where the header does not scroll on small devices */
 
 .mdl-layout__container .mdl-layout--fixed-header .mdl-layout__content {
-  overflow-y: visible;
-  overflow-x: visible;
-  overflow: visible;
+    overflow-y: visible;
+    overflow-x: visible;
+    overflow: visible;
 }
 
 /* Overrides MDL colors */
 
 .mdl-layout.is-upgraded .mdl-layout__tab.is-active::after, .header .mdl-textfield__label:after {
-  background-color: #FFCA28;
+    background-color: #FFCA28;
 }
 
 .mdl-snackbar__action {
-  color: #FFCA28;
+    color: #FFCA28;
 }
 
 .mdl-textfield__label:after {
-  background-color: #0288D1;
+    background-color: #0288D1;
 }
 
 .mdl-textfield--floating-label.is-focused .mdl-textfield__label {
-  color: #0288D1;
+    color: #0288D1;
 }
 
 /* Header */
 
 .logo {
-  font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .logo .material-icons {
-  top: 4px;
-  font-size: 32px;
-  margin-right: -2px;
-  position: relative;
+    top: 4px;
+    font-size: 32px;
+    margin-right: -2px;
+    position: relative;
 }
 
 .header .mdl-layout__header-row {
-  max-width: 1024px;
-  width: 100%;
-  height: auto;
-  padding: 10px 20px;
-  margin: auto;
-  position: relative;
+    max-width: 1024px;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+    margin: auto;
+    position: relative;
 }
 
 /* user */
 
 .user .mdl-card {
-  height: 100%;
-  top: 0;
-  left: 0;
-  min-height: 45px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    min-height: 45px;
 }
 
 .user .mdl-card__title-text {
-  text-align: center;
+    text-align: center;
 }
 
 .user .mdl-button {
-  height: 100%;
-  width: 100%;
-  font-size: 3.5vh;
+    height: 100%;
+    width: 100%;
+    font-size: 3.5vh;
 }

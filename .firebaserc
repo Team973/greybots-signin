@@ -1,5 +1,5 @@
 {
-  "projects": {
-    "default": "greybots-signin"
-  }
+    "projects": {
+        "default": "greybots-signin"
+    }
 }

@@ -1,17 +1,17 @@
 {
-  "database": {
-    "rules": "database.rules.json"
-  },
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**",
-      "**/firebase.js",
-      "**/renderer.js",
-      "**/users.js",
-      "**/util.js"
-    ]
-  }
+    "database": {
+        "rules": "database.rules.json"
+    },
+    "hosting": {
+        "public": "src",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**",
+            "**/firebase.js",
+            "**/renderer.js",
+            "**/users.js",
+            "**/util.js"
+        ]
+    }
 }
