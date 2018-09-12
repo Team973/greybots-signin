@@ -160,7 +160,10 @@ const userList = userDB.orderByChild('firstName')
 export function fetchUsers () {
     userList.on('child_added', (snapshot) => {
         const userId = snapshot.key
-        const userTitle = userId.replace('-', ' ')
+        const userName = userId.split('-')
+        const userFirstName = userName[0]
+        const userLastName = userName[1].charAt(0)
+        const userTitle = `${userFirstName} ${userLastName}`
         const containerElement = document.getElementById('users-container')
         containerElement.insertBefore(
             createUserElement(userId, userTitle),
