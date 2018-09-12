@@ -172,4 +172,7 @@ export function fetchUsers () {
         const userId = snapshot.key
         btnColorChange(userId)
     })
+    userList.on('child_removed', (snapshot) => {
+        window.location.reload()
+    })
 }
