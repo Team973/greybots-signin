@@ -58,7 +58,7 @@ function getCurrentTime () {
  */
 function getCurrentDate () {
     const now = new Date()
-    const currentDate = `${prependZero(addOne(now.getMonth()))}-${prependZero(now.getDate())}`
+    const currentDate = `${prependZero(addOne(now.getMonth()))}-${prependZero(now.getDate())}-${now.getFullYear()}`
     return currentDate
 }
 
