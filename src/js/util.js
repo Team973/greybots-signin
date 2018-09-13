@@ -9,7 +9,7 @@
  * @param {number} i An integer.
  * @returns {number} i with 0 prepended if needed.
  */
-function addZero (i) {
+function prependZero (i) {
     let zero = i
     if (i < 10) {
         zero = `0${i}`
@@ -48,7 +48,7 @@ function toTwelveHour (i) {
  */
 function getCurrentTime () {
     const now = new Date()
-    const currentTime = `${toTwelveHour(now.getHours())}:${addZero(now.getMinutes())}:${addZero(now.getSeconds())}`
+    const currentTime = `${toTwelveHour(now.getHours())}:${prependZero(now.getMinutes())}:${prependZero(now.getSeconds())}`
     return currentTime
 }
 
@@ -58,7 +58,7 @@ function getCurrentTime () {
  */
 function getCurrentDate () {
     const now = new Date()
-    const currentDate = `${addOne(now.getMonth())}-${now.getDate()}`
+    const currentDate = `${prependZero(addOne(now.getMonth()))}-${prependZero(now.getDate())}`
     return currentDate
 }
 
