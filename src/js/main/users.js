@@ -176,6 +176,6 @@ export function fetchUsers () {
         btnColorChange(userId)
     })
     userList.on('child_removed', (snapshot) => {
-        window.location.reload()
+        window.location.reload(true)
     })
 }
