@@ -28,27 +28,12 @@ function addOne (i) {
 }
 
 /**
- * Converts the input to 12-hour time.
- * @param {number} i 24-hour based time.
- * @returns {number} 12-hour based time.
- */
-function toTwelveHour (i) {
-    let twelve = i
-    if (i > 12) {
-        twelve -= 12
-    } else if (i === 0) {
-        twelve = 12
-    }
-    return twelve
-}
-
-/**
  * Returns the current time in 12-hour format.
  * @returns {number} The current time in 12-hour format.
  */
 function getCurrentTime () {
     const now = new Date()
-    const currentTime = `${toTwelveHour(now.getHours())}:${prependZero(now.getMinutes())}:${prependZero(now.getSeconds())}`
+    const currentTime = `${prependZero(now.getHours())}:${prependZero(now.getMinutes())}:${prependZero(now.getSeconds())}`
     return currentTime
 }
 
