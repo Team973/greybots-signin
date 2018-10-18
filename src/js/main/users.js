@@ -124,7 +124,8 @@ function createUserElement (userId, title) {
     // Create the DOM element from the HTML.
     // Create grid
     const grid = document.createElement('div')
-    grid.setAttribute('class', `user user-${userId} mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing`)
+    grid.setAttribute('id', `container-${userId}`)
+    grid.setAttribute('class', 'user mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-desktop mdl-grid mdl-grid--no-spacing')
 
     // Create card
     const card = document.createElement('div')
@@ -176,6 +177,8 @@ export function fetchUsers () {
         btnColorChange(userId)
     })
     userList.on('child_removed', (snapshot) => {
-        window.location.reload(true)
+        const userId = snapshot.key
+        const userElement = document.getElementById(`container-${userId}`)
+        userElement.parentNode.removeChild(userElement)
     })
 }
