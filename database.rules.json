@@ -1,7 +1,7 @@
-// These rules require authentication
+// Use programming.greybots@gmail.com account
 {
     "rules": {
-        ".read": "auth != null",
-        ".write": "auth != null"
+        ".read": "'ZIYNPaSh0TSqXZpNYHr6pdlYaRx2' === auth.uid",
+        ".write": "'ZIYNPaSh0TSqXZpNYHr6pdlYaRx2' === auth.uid"
     }
 }

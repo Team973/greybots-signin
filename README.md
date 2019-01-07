@@ -32,7 +32,7 @@ To push your changes to Firebase's servers, do the following:
 
 ### Modules
 
-Try to separate your code into different modules. An example of this is in `src/js/util.js` where there are utility functions for time, date, and etc. Make sure to use `exports`.
+Try to separate your code into different modules. An example of this is in `src/js/util.js` where there are utility functions for time, date, and etc. Make sure to use `export`s.
 
 ### Linting
 

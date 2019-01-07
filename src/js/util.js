@@ -31,7 +31,7 @@ function addOne (i) {
  * Returns the current time in 12-hour format.
  * @returns {number} The current time in 12-hour format.
  */
-function getCurrentTime () {
+export function getCurrentTime () {
     const now = new Date()
     const currentTime = `${prependZero(now.getHours())}:${prependZero(now.getMinutes())}:${prependZero(now.getSeconds())}`
     return currentTime
@@ -41,13 +41,8 @@ function getCurrentTime () {
  * Returns the current date in mm/dd format.
  * @returns {number} The current date in mm/dd format.
  */
-function getCurrentDate () {
+export function getCurrentDate () {
     const now = new Date()
     const currentDate = `${prependZero(addOne(now.getMonth()))}-${prependZero(now.getDate())}-${now.getFullYear()}`
     return currentDate
-}
-
-module.exports = {
-    getCurrentTime,
-    getCurrentDate
 }

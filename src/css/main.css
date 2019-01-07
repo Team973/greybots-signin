@@ -1,18 +1,4 @@
-/**
- * Copyright 2015 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);
 
 html, body {
     font-family: 'Roboto', 'Helvetica', sans-serif;
@@ -23,24 +9,11 @@ a {
     color: #039BE5;
 }
 
-.mdl-menu a {
-    text-decoration: none;
-}
-
 .content {
     max-width: 1024px;
 }
 
-.mdl-card {
-    display: block;
-}
-
-.mdl-textfield {
-    width: 100%;
-}
-
 /* Fixes an MDL bug where the header does not scroll on small devices */
-
 .mdl-layout__container .mdl-layout--fixed-header .mdl-layout__content {
     overflow-y: visible;
     overflow-x: visible;
@@ -48,25 +21,11 @@ a {
 }
 
 /* Overrides MDL colors */
-
 .mdl-layout.is-upgraded .mdl-layout__tab.is-active::after, .header .mdl-textfield__label:after {
     background-color: #FFCA28;
 }
 
-.mdl-snackbar__action {
-    color: #FFCA28;
-}
-
-.mdl-textfield__label:after {
-    background-color: #0288D1;
-}
-
-.mdl-textfield--floating-label.is-focused .mdl-textfield__label {
-    color: #0288D1;
-}
-
 /* Header */
-
 .logo {
     font-family: 'Roboto', sans-serif;
 }
@@ -85,23 +44,4 @@ a {
     padding: 10px 20px;
     margin: auto;
     position: relative;
-}
-
-/* user */
-
-.user .mdl-card {
-    height: 100%;
-    top: 0;
-    left: 0;
-    min-height: 45px;
-}
-
-.user .mdl-card__title-text {
-    text-align: center;
-}
-
-.user .mdl-button {
-    height: 100%;
-    width: 100%;
-    font-size: 3.5vh;
 }
