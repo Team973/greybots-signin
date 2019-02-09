@@ -2,14 +2,14 @@
 
 [![Build Status](https://travis-ci.com/Team973/greybots-signin.svg?token=PMQ4h4i9r3eRUJnsCJBt&branch=master)](https://travis-ci.com/Team973/greybots-signin)
 
-Team 973 - The Greybots' clock in/out system that runs on [Firebase](https://firebase.google.com/)'s [Real Time Database](https://firebase.google.com/docs/database/) w/ [Firebase Hosting](https://firebase.google.com/docs/hosting/). Also uses a Raspberry Pi with a ELO touchscreen in our shop.
+Team 973 - The Greybots' clock in/out system that runs on [Firebase](https://firebase.google.com/)'s [Real Time Database](https://firebase.google.com/docs/database/) w/ [Firebase Hosting](https://firebase.google.com/docs/hosting/).
 
 ## Getting started
 
 ### Create a working developer environment
 
 1.  Clone this repository to your local workspace.
-2.  Install `npm` using your package manager. Check Yarn's website for instructions.
+2.  Install `npm` using your package manager. Check NPM's website for instructions.
 3.  Run `npm install` in the repository.
 
 ### Testing using Firebase Hosting
