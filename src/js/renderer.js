@@ -4,7 +4,7 @@
  * @copyright The Greybots 2019
  */
 
-import { showAccountDialog, updateAuthStatus } from './firebase.js'
+import { showAccountDialog, updateAuthStatus } from './authentication.js'
 import { getCurrentDate, getCurrentTime } from './util.js'
 
 /**
@@ -32,7 +32,6 @@ function initApp () {
     window.updateAuthStatus = updateAuthStatus
 }
 
-// document.addEventListener('DOMContentsLoaded', () => initApp())
 window.onload = () => {
     initApp()
 }

@@ -4,7 +4,7 @@
  * @copyright The Greybots 2019
  */
 
-import { studentDB } from './firebase.js'
+import { studentDB } from './authentication.js'
 import { getCurrentTime, getCurrentDate } from './util.js'
 import { pushStudentActionDateTime } from './spreadsheet.js'
 

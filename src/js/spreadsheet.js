@@ -4,7 +4,7 @@
  * @copyright The Greybots 2019
  */
 
-import { mainDB } from './firebase.js'
+import { mainDB } from './authentication.js'
 
 // Initialize a spreadsheet variable
 var spreadsheetId
