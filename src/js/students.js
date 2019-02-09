@@ -46,12 +46,14 @@ function studentBtnHandler (studentId) {
     const student = studentDB.child(studentId)
 
     console.log(`${studentId}'s button clicked'`)
-    student.once('value', (snapshot) => {
+    student.once('value').then((snapshot) => {
         if (snapshot.val().status === 'in') {
             clockOut(studentId)
         } else {
             clockIn(studentId)
         }
+    }).catch((error) => {
+        console.error(error)
     })
 }
 
@@ -59,15 +61,19 @@ function studentBtnHandler (studentId) {
  * Clocks all clocked in students out in the database.
  */
 document.getElementById('clock-everyone-out').onclick = () => {
-    studentDB.once('value', (snapshot) => {
+    studentDB.once('value').then((snapshot) => {
         Object.keys(snapshot.val()).forEach((studentId) => {
             const student = studentDB.child(studentId)
-            student.once('value', (snap) => {
+            student.once('value').then((snap) => {
                 if (snap.val().status === 'in') {
                     clockOut(studentId)
                 }
+            }).catch((error) => {
+                console.error(error)
             })
         })
+    }).catch((error) => {
+        console.log(error)
     })
 }
 
@@ -76,7 +82,7 @@ document.getElementById('clock-everyone-out').onclick = () => {
  * @param {Object} studentId firebase.DataSnapshot output for the student.
  */
 function btnColorChange (studentId) {
-    studentDB.child(studentId).once('value', (snapshot) => {
+    studentDB.child(studentId).once('value').then((snapshot) => {
         const btnColor = document.getElementById(`button-${studentId}`)
         if (snapshot.val().status === 'in') {
             btnColor.style.backgroundColor = '#8bc34a'
@@ -87,6 +93,8 @@ function btnColorChange (studentId) {
         } else {
             throw new Error('Incorrect student status.')
         }
+    }).catch((error) => {
+        console.error(error)
     })
 }
 

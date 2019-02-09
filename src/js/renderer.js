@@ -21,15 +21,18 @@ function startDateTime () {
  * Initialize the main application.
  */
 function initApp () {
+    console.log('initializing')
+
     document.getElementById('show-account-dialog').addEventListener('click', () => {
         showAccountDialog()
     })
 
     startDateTime()
+
+    window.updateAuthStatus = updateAuthStatus
 }
 
-window.updateAuthStatus = updateAuthStatus
-
+// document.addEventListener('DOMContentsLoaded', () => initApp())
 window.onload = () => {
     initApp()
 }
