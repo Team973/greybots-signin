@@ -19,6 +19,11 @@ function clockIn (studentId) {
 
     student.update({
         status: 'in'
+    }).then((response) => {
+        console.log(`firebase clock in response: ${response}`)
+    }).catch((error) => {
+        console.error(`firebase clock in error: ${error}`)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 
     pushStudentActionDateTime(studentId, 'in', getCurrentDate(), getCurrentTime())
@@ -33,6 +38,11 @@ function clockOut (studentId) {
 
     student.update({
         status: 'out'
+    }).then((response) => {
+        console.log(`firebase clock out response: ${response}`)
+    }).catch((error) => {
+        console.error(`firebase clock out error: ${error}`)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 
     pushStudentActionDateTime(studentId, 'out', getCurrentDate(), getCurrentTime())
@@ -47,13 +57,15 @@ function studentBtnHandler (studentId) {
 
     console.log(`${studentId}'s button clicked'`)
     student.once('value').then((snapshot) => {
+        console.log(`firebase student btn response: ${snapshot}`)
         if (snapshot.val().status === 'in') {
             clockOut(studentId)
         } else {
             clockIn(studentId)
         }
     }).catch((error) => {
-        console.error(error)
+        console.error(`firebase student btn error ${error}`)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 }
 
@@ -62,18 +74,24 @@ function studentBtnHandler (studentId) {
  */
 document.getElementById('clock-everyone-out').onclick = () => {
     studentDB.once('value').then((snapshot) => {
+        console.log(`firebase clock everyone out student db response: ${snapshot}`)
+
         Object.keys(snapshot.val()).forEach((studentId) => {
             const student = studentDB.child(studentId)
             student.once('value').then((snap) => {
+                console.log(`firebase clock everyone out student response: ${snap}`)
+
                 if (snap.val().status === 'in') {
                     clockOut(studentId)
                 }
             }).catch((error) => {
-                console.error(error)
+                console.error(`firebase clock everyone out student error: ${error}`)
+                window.alert('ERROR! CONTACT CHRIS LAWSON.')
             })
         })
     }).catch((error) => {
-        console.log(error)
+        console.error(`firebase clock everyone out student db error: ${error}`)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 }
 
@@ -83,6 +101,8 @@ document.getElementById('clock-everyone-out').onclick = () => {
  */
 function btnColorChange (studentId) {
     studentDB.child(studentId).once('value').then((snapshot) => {
+        console.log(`firebase btn color change response: ${snapshot}`)
+
         const btnColor = document.getElementById(`button-${studentId}`)
         if (snapshot.val().status === 'in') {
             btnColor.style.backgroundColor = '#8bc34a'
@@ -94,7 +114,8 @@ function btnColorChange (studentId) {
             throw new Error('Incorrect student status.')
         }
     }).catch((error) => {
-        console.error(error)
+        console.error(`firebase btn color change error: ${error}`)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 }
 

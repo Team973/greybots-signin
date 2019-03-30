@@ -38,18 +38,27 @@ export const studentDB = mainDB.ref('students')
  * Handles the sign in button press.
  */
 function signOut () {
+    var signOutError = false
     firebase.auth().signOut().catch((error) => {
         // An error happened.
         console.error(error)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
+
+        signOutError = true
     })
     gapi.auth2.getAuthInstance().signOut().catch((error) => {
         // An error happened.
         console.error(error)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
+
+        signOutError = true
     })
     document.getElementById('signin-container').style.visibility = 'visible'
     document.getElementById('account-dialog-action').textContent = 'Sign in above'
     document.getElementById('account-dialog-action').disabled = true
-    window.location = window.location
+    if (!signOutError) {
+        window.location = window.location
+    }
 }
 
 function isUserEqual (googleUser, firebaseUser) {
@@ -79,7 +88,9 @@ export function updateAuthStatus (googleUser) {
             var credential = firebase.auth.GoogleAuthProvider.credential(
                 googleUser.getAuthResponse().id_token)
             // Sign in with credential from the Google user.
-            firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => {
+            firebase.auth().signInAndRetrieveDataWithCredential(credential).then((response) => {
+                console.log(`firebase signin response: ${response}`)
+            }).catch((error) => {
                 // Handle Errors here.
                 var errorCode = error.code
                 var errorMessage = error.message
@@ -89,6 +100,7 @@ export function updateAuthStatus (googleUser) {
                 var credential = error.credential
 
                 console.error(`Error signing into Firebase; error code: ${errorCode}, message: ${errorMessage}, email: ${email}, credential: ${credential}`)
+                window.alert('ERROR! CONTACT CHRIS LAWSON.')
             })
         } else {
             console.log('User already signed-in Firebase.')

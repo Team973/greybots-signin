@@ -12,9 +12,12 @@ var spreadsheetId
 export function pushStudentActionDateTime (studentId, action, date, time) {
     // Read the spreadsheet id from Firebase
     mainDB.ref('spreadsheetId').once('value').then((snapshot) => {
+        console.log(`firebase response: ${snapshot}`)
+
         spreadsheetId = snapshot.val()
     }, (error) => {
-        console.error(error)
+        console.error(`firebase error: ${error}`)
+        window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 
     console.log(`Pushing new data to spreadsheet: ${studentId} went ${action} on ${date} at ${time}`)
@@ -22,13 +25,19 @@ export function pushStudentActionDateTime (studentId, action, date, time) {
     gapi.client.sheets.spreadsheets.values.append({
         spreadsheetId: spreadsheetId,
         range: 'Raw Attendance',
-        valueInputOption: 'RAW',
+        valueInputOption: 'USER_ENTERED',
         resource: {
             values: [[studentId, action, date, time]]
         }
     }).then((response) => {
         console.log(`spreadsheet response: ${response}`)
     }).catch((error) => {
-        console.error(error)
+        console.error(`spreadsheet error: ${error}`)
+        if (error.status === 401) {
+            window.alert('ERROR WRITING TO SPREADSHEET. RELOADING!')
+            window.location.reload(true)
+        } else {
+            window.alert('ERROR! CONTACT CHRIS LAWSON.')
+        }
     })
 }
