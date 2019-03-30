@@ -9,7 +9,7 @@ import { mainDB } from './authentication.js'
 // Initialize a spreadsheet variable
 var spreadsheetId
 
-export function pushStudentActionDateTime (studentId, action, date, time) {
+export function pushStudentActionDateTime (studentId, action, date) {
     // Read the spreadsheet id from Firebase
     mainDB.ref('spreadsheetId').once('value').then((snapshot) => {
         console.log(`firebase response: ${snapshot}`)
@@ -20,14 +20,14 @@ export function pushStudentActionDateTime (studentId, action, date, time) {
         window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 
-    console.log(`Pushing new data to spreadsheet: ${studentId} went ${action} on ${date} at ${time}`)
+    console.log(`Pushing new data to spreadsheet: ${studentId} went ${action} at ${date}`)
 
     gapi.client.sheets.spreadsheets.values.append({
         spreadsheetId: spreadsheetId,
         range: 'Raw Attendance',
         valueInputOption: 'USER_ENTERED',
         resource: {
-            values: [[studentId, action, date, time]]
+            values: [[studentId, action, date]]
         }
     }).then((response) => {
         console.log(`spreadsheet response: ${response}`)

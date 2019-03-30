@@ -33,7 +33,7 @@ function addOne (i) {
  */
 export function getCurrentTime () {
     const now = new Date()
-    const currentTime = `${prependZero(now.getHours())}:${prependZero(now.getMinutes())}:${prependZero(now.getSeconds())}`
+    const currentTime = `${now.getHours()}:${prependZero(now.getMinutes())}:${prependZero(now.getSeconds())}`
     return currentTime
 }
 
@@ -43,6 +43,6 @@ export function getCurrentTime () {
  */
 export function getCurrentDate () {
     const now = new Date()
-    const currentDate = `${prependZero(addOne(now.getMonth()))}-${prependZero(now.getDate())}-${now.getFullYear()}`
+    const currentDate = `${addOne(now.getMonth())}/${prependZero(now.getDate())}/${now.getFullYear()}`
     return currentDate
 }

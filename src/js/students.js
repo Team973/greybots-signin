@@ -5,8 +5,8 @@
  */
 
 import { studentDB } from './authentication.js'
-import { getCurrentTime, getCurrentDate } from './util.js'
 import { pushStudentActionDateTime } from './spreadsheet.js'
+import { getCurrentDate, getCurrentTime } from './util.js'
 
 /**
  * Clocks in the student.
@@ -15,7 +15,7 @@ import { pushStudentActionDateTime } from './spreadsheet.js'
 function clockIn (studentId) {
     const student = studentDB.child(studentId)
 
-    console.log(`signing in ${studentId} at ${getCurrentTime()}`)
+    console.log(`signing in ${studentId} at ${getCurrentDate()} ${getCurrentTime()}`)
 
     student.update({
         status: 'in'
@@ -26,7 +26,7 @@ function clockIn (studentId) {
         window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 
-    pushStudentActionDateTime(studentId, 'in', getCurrentDate(), getCurrentTime())
+    pushStudentActionDateTime(studentId, 'in', `${getCurrentDate()} ${getCurrentTime()}`)
 }
 
 /**
@@ -35,6 +35,8 @@ function clockIn (studentId) {
  */
 function clockOut (studentId) {
     const student = studentDB.child(studentId)
+
+    console.log(`signing out ${studentId} at ${getCurrentDate()} ${getCurrentTime()}`)
 
     student.update({
         status: 'out'
@@ -45,7 +47,7 @@ function clockOut (studentId) {
         window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 
-    pushStudentActionDateTime(studentId, 'out', getCurrentDate(), getCurrentTime())
+    pushStudentActionDateTime(studentId, 'out', `${getCurrentDate()} ${getCurrentTime()}`)
 }
 
 /**
