@@ -5,8 +5,7 @@
  */
 
 import { studentDB } from './authentication.js'
-import { pushStudentActionDateTime } from './spreadsheet.js'
-import { getCurrentDate, getCurrentTime } from './util.js'
+import { pushStudentDateTime } from './spreadsheet.js'
 
 /**
  * Clocks in the student.
@@ -15,7 +14,7 @@ import { getCurrentDate, getCurrentTime } from './util.js'
 function clockIn (studentId) {
     const student = studentDB.child(studentId)
 
-    console.log(`signing in ${studentId} at ${getCurrentDate()} ${getCurrentTime()}`)
+    console.log(`signing in ${studentId} on ${new Date()}`)
 
     student.update({
         status: 'in'
@@ -26,28 +25,7 @@ function clockIn (studentId) {
         window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 
-    pushStudentActionDateTime(studentId, 'in', `${getCurrentDate()} ${getCurrentTime()}`)
-}
-
-/**
- * Clocks out the student.
- * @param {string} student The student object from the database.
- */
-function clockOut (studentId) {
-    const student = studentDB.child(studentId)
-
-    console.log(`signing out ${studentId} at ${getCurrentDate()} ${getCurrentTime()}`)
-
-    student.update({
-        status: 'out'
-    }).then((response) => {
-        console.log(`firebase clock out response: ${response}`)
-    }).catch((error) => {
-        console.error(`firebase clock out error: ${error}`)
-        window.alert('ERROR! CONTACT CHRIS LAWSON.')
-    })
-
-    pushStudentActionDateTime(studentId, 'out', `${getCurrentDate()} ${getCurrentTime()}`)
+    pushStudentDateTime(studentId, new Date())
 }
 
 /**
@@ -60,39 +38,11 @@ function studentBtnHandler (studentId) {
     console.log(`${studentId}'s button clicked'`)
     student.once('value').then((snapshot) => {
         console.log(`firebase student btn response: ${snapshot}`)
-        if (snapshot.val().status === 'in') {
-            clockOut(studentId)
-        } else {
+        if (snapshot.val().status === 'out') {
             clockIn(studentId)
         }
     }).catch((error) => {
         console.error(`firebase student btn error ${error}`)
-        window.alert('ERROR! CONTACT CHRIS LAWSON.')
-    })
-}
-
-/**
- * Clocks all clocked in students out in the database.
- */
-document.getElementById('clock-everyone-out').onclick = () => {
-    studentDB.once('value').then((snapshot) => {
-        console.log(`firebase clock everyone out student db response: ${snapshot}`)
-
-        Object.keys(snapshot.val()).forEach((studentId) => {
-            const student = studentDB.child(studentId)
-            student.once('value').then((snap) => {
-                console.log(`firebase clock everyone out student response: ${snap}`)
-
-                if (snap.val().status === 'in') {
-                    clockOut(studentId)
-                }
-            }).catch((error) => {
-                console.error(`firebase clock everyone out student error: ${error}`)
-                window.alert('ERROR! CONTACT CHRIS LAWSON.')
-            })
-        })
-    }).catch((error) => {
-        console.error(`firebase clock everyone out student db error: ${error}`)
         window.alert('ERROR! CONTACT CHRIS LAWSON.')
     })
 }
