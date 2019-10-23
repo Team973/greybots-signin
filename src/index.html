@@ -15,73 +15,91 @@
     <script type="text/javascript" src="https://apis.google.com/js/client:api.js"></script>
 
     <!-- Firebase -->
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
 
     <!-- Material Design Theming -->
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link type="text/css" rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script type="text/javascript" defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/lib/jquery.scannerdetection.js"></script>
+
     <link type="text/css" rel="stylesheet" href="css/main.css">
 
     <script type="module" src="./js/renderer.js"></script>
+    <script type="text/javascript">
+    $(document).scannerDetection({
+        timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+        startChar: [120], // Prefix character for the cabled scanner (OPL6845R)
+        endChar: [13], // be sure the scan is complete if key 13 (enter) is detected
+        avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
+        onComplete: clockIn // main callback function	
+    });
+    </script>
 </head>
 
 <body>
     <div class="mdl-layout mdl-js-layout">
-
         <main class="mdl-layout__content mdl-color--grey-100">
-            <section id="scanner" class="tabcontent">
-                <input
-            </section>
-            <section id="manual" class="tabcontent">
-                <!-- Show the list of user's -->
-                <div id="student-container" class="mdl-cell mdl-cell--12-col mdl-grid" style="justify-content: center">
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-tabs__tab-bar">
+                    <a href="#scanner" class="mdl-tabs__tab is-active">QR Code Scanner</a>
+                    <a href="#manual" class="mdl-tabs__tab">Manual</a>
                 </div>
 
-                <!-- Prepare a dialog for signing in/out -->
-                <dialog id="account-dialog" class="mdl-dialog">
-                    <h4 class="mdl-dialog__title">
-                        Login to the Database
-                    </h4>
-                    <div class="mdl-dialog__content">
-                        <p>Sign in using the programming.greybots@gmail.com Google account.</p>
-                        <div id="signin-container" class="g-signin2" data-onsuccess="updateAuthStatus"
-                            data-theme="dark"></div>
-                    </div>
-                    <div class="mdl-dialog__actions">
-                        <button id="account-dialog-action" type="button" class="mdl-button" disabled>Sign in
-                            above</button>
-                        <button id="account-dialog-close" type="button" class="mdl-button">Close</button>
-                    </div>
-                </dialog>
+                <div id="scanner" class="mdl-tabs__panel is-active scannerInfo">
+                    <img id="userImage" class="userImage" src="img/user.svg" />
+                    <h1 id="name">Waiting for scan...</h1>
+                    <!-- MDL Progress Bar with Indeterminate Progress -->
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="display: inline-block;"></div>
+                </div>
 
-                <!-- Show the available options -->
-                <div
-                    class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-                    <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
-                        <h2 class="mdl-card__title-text">Options</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        <button
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                            onclick="window.location.reload(true);">
-                            <i class="material-icons">refresh</i> Reload
-                        </button>
-                        <button id="clock-everyone-out"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                            <i class="material-icons">assignment_return</i> Clock everyone out
-                        </button>
-                        <button id="show-account-dialog"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                            <i class="material-icons">account_box</i> Show account dialog
-                        </button>
-                        <h3 id="datetime">XX-XX XX:XX:XX</h3>
+                <div id="manual" class="mdl-tabs__panel">
+                    <!-- Show the list of user's -->
+                    <div id="user-container" class="mdl-cell mdl-cell--12-col mdl-grid" style="justify-content: center">
                     </div>
                 </div>
-            </section>
+            </div>
+
+             <!-- Show the available options -->
+            <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+                    <h2 class="mdl-card__title-text">Options</h2>
+                </div>
+                <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                    <button
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                        onclick="window.location.reload(true);">
+                        <i class="material-icons">refresh</i> Reload
+                    </button>
+                    <button id="show-account-dialog"
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <i class="material-icons">account_box</i> Show account dialog
+                    </button>
+                    <h3 id="datetime">XX-XX XX:XX:XX</h3>
+                </div>
+            </div>
+
+            <!-- Prepare a dialog for signing in/out -->
+            <dialog id="account-dialog" class="mdl-dialog">
+                <h4 class="mdl-dialog__title">
+                    Login to the Database
+                </h4>
+                <div class="mdl-dialog__content">
+                    <p>Sign in using the programming.greybots@gmail.com Google account.</p>
+                    <div id="signin-container" class="g-signin2" data-onsuccess="updateAuthStatus"
+                        data-theme="dark"></div>
+                </div>
+                <div class="mdl-dialog__actions">
+                    <button id="account-dialog-action" type="button" class="mdl-button" disabled>Sign in
+                        above</button>
+                    <button id="account-dialog-close" type="button" class="mdl-button">Close</button>
+                </div>
+            </dialog>
         </main>
     </div>
 </body>

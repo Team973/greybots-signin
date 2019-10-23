@@ -6,6 +6,7 @@
 
 import { showAccountDialog, updateAuthStatus } from './authentication.js'
 import { getCurrentDate, getCurrentTime } from './util.js'
+import { clockAllOut } from './users.js'
 
 /**
  * Create date/time info.
@@ -15,6 +16,8 @@ function startDateTime () {
     setTimeout(() => {
         startDateTime()
     }, 100)
+
+    setTimeout(clockAllOut, new Date('1/1/2020 12:00:00 AM').getTime() - new Date().getTime())
 }
 
 /**

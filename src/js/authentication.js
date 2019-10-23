@@ -4,9 +4,9 @@
  * @copyright The Greybots 2019
  */
 
-import { fetchStudents } from './students.js'
-import { pushStudentActionDateTime } from './spreadsheet.js'
-import { getCurrentDate, getCurrentTime } from './util.js'
+import {pushUserDateTime} from './spreadsheet.js'
+import {fetchUsers} from './users.js'
+import {getCurrentDate, getCurrentTime} from './util.js'
 
 // Initialize Firebase
 export const config = {
@@ -32,11 +32,11 @@ firebase.initializeApp(config)
 
 // Firebase variables
 export const mainDB = firebase.database()
-export const studentDB = mainDB.ref('students')
+export const userDB = mainDB.ref('users')
 
 /**
- * Handles the sign in button press.
- */
+     * Handles the sign in button press.
+     */
 function signOut () {
     var signOutError = false
     firebase.auth().signOut().catch((error) => {
@@ -54,7 +54,8 @@ function signOut () {
         signOutError = true
     })
     document.getElementById('signin-container').style.visibility = 'visible'
-    document.getElementById('account-dialog-action').textContent = 'Sign in above'
+    document.getElementById('account-dialog-action').textContent =
+            'Sign in above'
     document.getElementById('account-dialog-action').disabled = true
     if (!signOutError) {
         window.location = window.location
@@ -65,9 +66,10 @@ function isUserEqual (googleUser, firebaseUser) {
     if (firebaseUser) {
         var providerData = firebaseUser.providerData
         for (var i = 0; i < providerData.length; i++) {
-            if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-                providerData[i].uid === googleUser.getBasicProfile().getId()) {
-                // We don't need to reauth the Firebase connection.
+            if (providerData[i].providerId ===
+                  firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+              providerData[i].uid === googleUser.getBasicProfile().getId()) {
+            // We don't need to reauth the Firebase connection.
                 return true
             }
         }
@@ -80,7 +82,8 @@ export function updateAuthStatus (googleUser) {
     document.getElementById('account-dialog-action').disabled = false
 
     console.log('Google Auth Response', googleUser)
-    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+    // We need to register an Observer on Firebase Auth to make sure auth is
+    // initialized.
     firebase.auth().onAuthStateChanged((firebaseUser) => {
         // Check if we are already signed-in Firebase with the correct user.
         if (!isUserEqual(googleUser, firebaseUser)) {
@@ -99,7 +102,9 @@ export function updateAuthStatus (googleUser) {
                 // The firebase.auth.AuthCredential type that was used.
                 var credential = error.credential
 
-                console.error(`Error signing into Firebase; error code: ${errorCode}, message: ${errorMessage}, email: ${email}, credential: ${credential}`)
+                console.error(`Error signing into Firebase; error code: ${
+                    errorCode}, message: ${errorMessage}, email: ${
+                    email}, credential: ${credential}`)
                 window.alert('ERROR! CONTACT CHRIS LAWSON.')
             })
         } else {
@@ -107,27 +112,26 @@ export function updateAuthStatus (googleUser) {
         }
 
         document.getElementById('signin-container').style.visibility = 'hidden'
-        fetchStudents()
+        fetchUsers()
 
-        // Basically, there is a bug where the spreadsheet doesn't accept the first data pushed to it (404 :/) so we send a request to prime the system.
+        // Basically, there is a bug where the spreadsheet doesn't accept the
+        // first data pushed to it (404 :/) so we send a request to prime the
+        // system.
         console.warn('Expect a spreadsheet undefined error!')
-        pushStudentActionDateTime('INITALIZE-SYSTEM', 'in', getCurrentDate(), getCurrentTime())
+        pushUserDateTime(
+            'INITALIZE-SYSTEM', 'in', getCurrentDate(), getCurrentTime())
     })
 }
 
 /**
- * Shows the dialog for signing in to the database.
- */
+     * Shows the dialog for signing in to the database.
+     */
 export function showAccountDialog () {
     const accountDialog = document.getElementById('account-dialog')
     const actionBtn = document.getElementById('account-dialog-action')
     const closeBtn = document.getElementById('account-dialog-close')
     accountDialog.showModal()
 
-    closeBtn.addEventListener('click', () => {
-        accountDialog.close()
-    })
-    actionBtn.addEventListener('click', () => {
-        signOut()
-    })
+    closeBtn.addEventListener('click', () => { accountDialog.close() })
+    actionBtn.addEventListener('click', () => { signOut() })
 }

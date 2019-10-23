@@ -9,6 +9,15 @@ a {
     color: #039BE5;
 }
 
+.scannerInfo {
+    text-align: center;
+}
+
+.userImage {
+    width: 100px;
+    height: auto;
+}
+
 .content {
     max-width: 1024px;
 }
